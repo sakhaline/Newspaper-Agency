@@ -4,7 +4,7 @@
   <form method="get" action="">
     {{ form.topic_name }}
     <button type="submit">Filter</button>
-    {{ form.title }}
+    {{ form.query_search }}
     <button type="submit">Search</button>
   </form>
   <h1>
@@ -19,7 +19,8 @@
       {% for newspaper in newspaper_list %}
         <li>
           <a href="{% url 'media:newspaper-detail' pk=newspaper.id %}">{{ newspaper.id }}</a>
-          {{ newspaper.title }} ({{ newspaper.topic.name }})
+          <p>{{ newspaper.title }} ({{ newspaper.topic.name }})</p>
+          <p>{{ newspaper.content }}</p>
         </li>
       {% endfor %}
     </ul>

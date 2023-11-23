@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
-from media.models import Newspaper, Topic
+from media.models import Newspaper, Topic, Redactor
 
 
 class NewspaperCreationForm(forms.ModelForm):
@@ -21,11 +22,11 @@ class NewspaperFilterForm(forms.Form):
         empty_label="All topics",
         required=False,
     )
-    title = forms.CharField(
+    query_search = forms.CharField(
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by title..."})
+        widget=forms.TextInput(attrs={"placeholder": "Search..."})
     )
 
 
@@ -45,3 +46,15 @@ class RedactorSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(attrs={"placeholder": "Search by username or by first name..."})
     )
+
+
+class RedactorCreationForm(UserCreationForm):
+    class Meta:
+        model = Redactor
+        fields = ("username", "first_name", "last_name", "email",)
+
+
+
+
+
+

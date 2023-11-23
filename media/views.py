@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -5,9 +6,30 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
 from django.db.models import Q
+from django.contrib.auth.forms import UserCreationForm
 
 from media.models import Redactor, Newspaper, Topic
-from media.forms import NewspaperCreationForm, NewspaperFilterForm, TopicSearchForm, RedactorSearchForm
+from media.forms import NewspaperCreationForm, NewspaperFilterForm, TopicSearchForm, RedactorSearchForm, RedactorCreationForm
+
+
+class RedactorCreationView(generic.CreateView):
+    form_class = RedactorCreationForm
+    template_name = 'registration/register.html'
+    # fields = ("username", "first_name", "last_name", "email",)
+
+    def get_success_url(self):
+        return self.request.GET.get("next", "/")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
+
+
+class RedactorAuthenticationView(generic.CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/register.html'
+
 
 @login_required
 def index(request):
@@ -35,18 +57,21 @@ class NewspaperListView(generic.ListView):
 
     def get_queryset(self):
         form = NewspaperFilterForm(self.request.GET)
+
         queryset = Newspaper.objects.all()
 
-        # Apply filtering based on form data
         if form.is_valid():
             topic_name = form.cleaned_data.get('topic_name')
-            title = form.cleaned_data.get('title')
+            query_search = form.cleaned_data.get('query_search')
 
             if topic_name:
                 queryset = queryset.filter(topic=topic_name)
 
-            if title:
-                queryset = queryset.filter(title__icontains=title)
+            if query_search:
+                queryset = queryset.filter(
+                    Q(title__icontains=query_search)
+                    | Q(content__icontains=query_search)
+                )
 
         return queryset
 
