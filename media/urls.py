@@ -13,7 +13,7 @@ from media.views import (index,
                          TopicUpdateView,
                          TopicDeleteView,
                          RedactorCreationView,
-                         RedactorAuthenticationView,
+                         RedactorUpdateView,
                          )
 
 
@@ -34,9 +34,7 @@ urlpatterns = [
     path("redactors/", RedactorListView.as_view(), name="redactor-list"),
     path("redactors/<int:pk>/", RedactorDetailView.as_view(), name="redactor-detail"),
     path("register/", RedactorCreationView.as_view()),
-    path("login/", RedactorAuthenticationView.as_view()),
-    path("log/", RedactorCreationView.as_view()),
-
+    path("redactors/<int:pk>/update", RedactorUpdateView.as_view(), name="redactor-form"),
 ]
 
 

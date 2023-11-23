@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -6,29 +6,14 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
 from django.db.models import Q
-from django.contrib.auth.forms import UserCreationForm
 
 from media.models import Redactor, Newspaper, Topic
-from media.forms import NewspaperCreationForm, NewspaperFilterForm, TopicSearchForm, RedactorSearchForm, RedactorCreationForm
-
-
-class RedactorCreationView(generic.CreateView):
-    form_class = RedactorCreationForm
-    template_name = 'registration/register.html'
-    # fields = ("username", "first_name", "last_name", "email",)
-
-    def get_success_url(self):
-        return self.request.GET.get("next", "/")
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        login(self.request, self.object)
-        return response
-
-
-class RedactorAuthenticationView(generic.CreateView):
-    form_class = UserCreationForm
-    template_name = 'registration/register.html'
+from media.forms import (NewspaperCreationForm,
+                         NewspaperFilterForm,
+                         TopicSearchForm,
+                         RedactorSearchForm,
+                         RedactorCreationForm,
+                         RedactorUpdateForm,)
 
 
 @login_required
@@ -101,10 +86,6 @@ class NewspaperDeleteView(generic.DeleteView):
     model = Newspaper
     success_url = reverse_lazy("media:newspaper-list")
 
-
-class RedactorListView(generic.ListView):
-    model = Redactor
-
     def get_queryset(self):
         form = RedactorSearchForm(self.request.GET)
         queryset = Redactor.objects.all()
@@ -130,6 +111,32 @@ class RedactorListView(generic.ListView):
 class RedactorDetailView(generic.DetailView):
     model = Redactor
     queryset = Redactor.objects.all().prefetch_related("newspapers")
+
+
+class RedactorListView(generic.ListView):
+    model = Redactor
+
+
+class RedactorCreationView(generic.CreateView):
+    form_class = RedactorCreationForm
+    template_name = 'registration/register.html'
+
+    def get_success_url(self):
+        return self.request.GET.get("next", "/")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
+
+
+class RedactorUpdateView(generic.UpdateView):
+    form_class = RedactorUpdateForm
+    template_name = "media/redactor_form.html"
+    queryset = Redactor.objects.all()
+
+    def get_success_url(self):
+        return reverse_lazy("media:redactor-form", kwargs={'pk': self.object.pk})
 
 
 class TopicListView(generic.ListView):
