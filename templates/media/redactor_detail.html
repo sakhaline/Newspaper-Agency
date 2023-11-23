@@ -19,10 +19,7 @@
       <p>No newspapers!</p>
     {% endfor %}
   </div>
-  <a href="#">
-    <input class="btn btn-danger" type="submit" value="Delete">
-  </a>
-  <a href="#">
+  <a href="{% url 'media:redactor-form' pk=redactor.id %}">
     <input class="btn btn-primary" type="submit" value="Update">
   </a>
 {% endblock %}

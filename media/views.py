@@ -39,6 +39,7 @@ def index(request):
 class NewspaperListView(generic.ListView):
     model = Newspaper
     queryset = Newspaper.objects.all().select_related("topic")
+    paginate_by = 5
 
     def get_queryset(self):
         form = NewspaperFilterForm(self.request.GET)
@@ -115,6 +116,7 @@ class RedactorDetailView(generic.DetailView):
 
 class RedactorListView(generic.ListView):
     model = Redactor
+    paginate_by = 5
 
 
 class RedactorCreationView(generic.CreateView):
@@ -136,11 +138,12 @@ class RedactorUpdateView(generic.UpdateView):
     queryset = Redactor.objects.all()
 
     def get_success_url(self):
-        return reverse_lazy("media:redactor-form", kwargs={'pk': self.object.pk})
+        return reverse_lazy("media:redactor-list")
 
 
 class TopicListView(generic.ListView):
     model = Topic
+    paginate_by = 5
 
     def get_queryset(self):
         form = TopicSearchForm(self.request.GET)
