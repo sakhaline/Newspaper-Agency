@@ -18,9 +18,10 @@ class ModelTests(TestCase):
     def test_redactor_str(self):
         redactor = get_user_model().objects.create_user(
             username="alice52",
-            password="dddeeeeFFFFF54321",
+            first_name="Alice",
+            last_name="Smith"
         )
-        self.assertEqual(str(redactor), "alice52")
+        self.assertEqual(str(redactor), "alice52 (Alice Smith)")
 
     def test_topic_str(self):
         topic = Topic.objects.create(name="Technologies")

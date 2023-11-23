@@ -51,7 +51,7 @@ class RedactorSearchForm(forms.Form):
 class RedactorCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ("username", "first_name", "last_name", "email",)
+        fields = ("username", "first_name", "last_name", "email", "years_of_experience")
 
 
 class RedactorUpdateForm(UserChangeForm):
@@ -65,8 +65,3 @@ class RedactorUpdateForm(UserChangeForm):
             "years_of_experience",
         )
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-
-            if 'first_name' in self.fields:
-                del self.fields['first_name']

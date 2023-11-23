@@ -71,21 +71,33 @@ class NewspaperDetailView(generic.DetailView):
     model = Newspaper
 
 
-class NewspaperCreateView(generic.CreateView):
+class NewspaperCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = NewspaperCreationForm
     template_name = "media/newspaper_form.html"
     success_url = reverse_lazy("media:newspaper-list")
 
 
-class NewspaperUpdateView(generic.UpdateView):
+class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Newspaper
     fields = "__all__"
     success_url = reverse_lazy("media:newspaper-list")
 
 
-class NewspaperDeleteView(generic.DeleteView):
+class NewspaperDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Newspaper
+    fields = "__all__"
+    template_name = "media/newspaper_confirm_delete.html"
     success_url = reverse_lazy("media:newspaper-list")
+
+
+class RedactorDetailView(generic.DetailView):
+    model = Redactor
+    queryset = Redactor.objects.all().prefetch_related("newspapers")
+
+
+class RedactorListView(generic.ListView):
+    model = Redactor
+    paginate_by = 5
 
     def get_queryset(self):
         form = RedactorSearchForm(self.request.GET)
@@ -109,16 +121,6 @@ class NewspaperDeleteView(generic.DeleteView):
         return context
 
 
-class RedactorDetailView(generic.DetailView):
-    model = Redactor
-    queryset = Redactor.objects.all().prefetch_related("newspapers")
-
-
-class RedactorListView(generic.ListView):
-    model = Redactor
-    paginate_by = 5
-
-
 class RedactorCreationView(generic.CreateView):
     form_class = RedactorCreationForm
     template_name = 'registration/register.html'
@@ -132,7 +134,7 @@ class RedactorCreationView(generic.CreateView):
         return response
 
 
-class RedactorUpdateView(generic.UpdateView):
+class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = RedactorUpdateForm
     template_name = "media/redactor_form.html"
     queryset = Redactor.objects.all()
@@ -161,21 +163,21 @@ class TopicListView(generic.ListView):
         return context
 
 
-class TopicCreateView(generic.CreateView):
+class TopicCreateView(LoginRequiredMixin, generic.CreateView):
     model = Topic
     fields = "__all__"
     template_name = "media/topic_form.html"
     success_url = reverse_lazy("media:topic-list")
 
 
-class TopicUpdateView(generic.UpdateView):
+class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Topic
     fields = "__all__"
     template_name = "media/topic_form.html"
     success_url = reverse_lazy("media:topic-list")
 
 
-class TopicDeleteView(generic.DeleteView):
+class TopicDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Topic
     fields = "__all__"
     template_name = "media/topic_confirm_delete.html"

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.contenttypes.models import ContentType
 
 from media.models import Newspaper, Topic, Redactor
 
@@ -35,3 +36,4 @@ class NewspaperAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Topic)
+admin.site.register(ContentType)
