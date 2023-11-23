@@ -4,9 +4,10 @@ from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
+from django.db.models import Q
 
 from media.models import Redactor, Newspaper, Topic
-from media.forms import NewspaperCreationForm
+from media.forms import NewspaperCreationForm, NewspaperFilterForm, TopicSearchForm, RedactorSearchForm
 
 @login_required
 def index(request):
@@ -31,6 +32,28 @@ def index(request):
 class NewspaperListView(generic.ListView):
     model = Newspaper
     queryset = Newspaper.objects.all().select_related("topic")
+
+    def get_queryset(self):
+        form = NewspaperFilterForm(self.request.GET)
+        queryset = Newspaper.objects.all()
+
+        # Apply filtering based on form data
+        if form.is_valid():
+            topic_name = form.cleaned_data.get('topic_name')
+            title = form.cleaned_data.get('title')
+
+            if topic_name:
+                queryset = queryset.filter(topic=topic_name)
+
+            if title:
+                queryset = queryset.filter(title__icontains=title)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = NewspaperFilterForm(self.request.GET)
+        return context
 
 
 class NewspaperDetailView(generic.DetailView):
@@ -57,6 +80,27 @@ class NewspaperDeleteView(generic.DeleteView):
 class RedactorListView(generic.ListView):
     model = Redactor
 
+    def get_queryset(self):
+        form = RedactorSearchForm(self.request.GET)
+        queryset = Redactor.objects.all()
+
+        if form.is_valid():
+            search_value = form.cleaned_data.get("search_query")
+
+            return queryset.filter(
+                (
+                    Q(username__icontains=search_value)
+                    | Q(first_name__icontains=search_value)
+                    | Q(last_name__icontains=search_value)
+                )
+            )
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = RedactorSearchForm(self.request.GET)
+        return context
+
 
 class RedactorDetailView(generic.DetailView):
     model = Redactor
@@ -65,6 +109,21 @@ class RedactorDetailView(generic.DetailView):
 
 class TopicListView(generic.ListView):
     model = Topic
+
+    def get_queryset(self):
+        form = TopicSearchForm(self.request.GET)
+        queryset = Topic.objects.all()
+
+        if form.is_valid():
+            topic_name = form.cleaned_data.get('topic_name')
+            return queryset.filter(name__icontains=topic_name)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = TopicSearchForm(self.request.GET)
+        return context
 
 
 class TopicCreateView(generic.CreateView):

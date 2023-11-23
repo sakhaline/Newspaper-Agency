@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 
+  <form method="get" action="">
+    {{ form.topic_name }}
+    <button type="submit">Filter</button>
+    {{ form.title }}
+    <button type="submit">Search</button>
+  </form>
   <h1>
     List of newspapers
     <a href="{% url 'media:newspaper-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
   </h1>
+
   {% if newspaper_list %}
     <ul>
       {% for newspaper in newspaper_list %}
@@ -20,3 +27,5 @@
     <p>There are no newspapers in service</p>
   {% endif %}
 {% endblock %}
+
+

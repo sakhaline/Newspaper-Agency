@@ -23,7 +23,7 @@ class Topic(models.Model):
 
 
 class Newspaper(models.Model):
-    title = models.CharField(max_length=55)
+    title = models.CharField(max_length=255)
     content = models.TextField()
     published_date = models.DateField(auto_now_add=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
