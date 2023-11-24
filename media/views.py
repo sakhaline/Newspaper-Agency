@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 
 from media.models import Redactor, Newspaper, Topic
 from media.forms import (NewspaperCreationForm,
@@ -17,7 +17,7 @@ from media.forms import (NewspaperCreationForm,
 
 
 @login_required
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     """View function for the home page of the site."""
 
     num_redactors = Redactor.objects.count()
@@ -99,7 +99,7 @@ class RedactorListView(generic.ListView):
     model = Redactor
     paginate_by = 4
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         form = RedactorSearchForm(self.request.GET)
         queryset = Redactor.objects.all()
 
@@ -115,7 +115,7 @@ class RedactorListView(generic.ListView):
             )
         return queryset
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["form"] = RedactorSearchForm(self.request.GET)
         return context
@@ -125,10 +125,10 @@ class RedactorCreationView(generic.CreateView):
     form_class = RedactorCreationForm
     template_name = 'registration/register.html'
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return self.request.GET.get("next", "/")
 
-    def form_valid(self, form):
+    def form_valid(self, form) -> HttpResponse:
         response = super().form_valid(form)
         login(self.request, self.object)
         return response
@@ -139,7 +139,7 @@ class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "media/redactor_form.html"
     queryset = Redactor.objects.all()
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy("media:redactor-list")
 
 
@@ -147,7 +147,7 @@ class TopicListView(generic.ListView):
     model = Topic
     paginate_by = 4
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         form = TopicSearchForm(self.request.GET)
         queryset = Topic.objects.all()
 
@@ -157,7 +157,7 @@ class TopicListView(generic.ListView):
 
         return queryset
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context['form'] = TopicSearchForm(self.request.GET)
         return context

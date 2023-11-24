@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from media.models import Newspaper, Topic, Redactor
+from media.models import Newspaper, Topic
 
 
 class NewspaperCreationForm(forms.ModelForm):
@@ -44,7 +44,7 @@ class RedactorSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by username or by first name..."})
+        widget=forms.TextInput(attrs={"placeholder": "Search..."})
     )
 
 
@@ -64,4 +64,3 @@ class RedactorUpdateForm(UserChangeForm):
             "email",
             "years_of_experience",
         )
-

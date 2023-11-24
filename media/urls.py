@@ -13,8 +13,7 @@ from media.views import (index,
                          TopicUpdateView,
                          TopicDeleteView,
                          RedactorCreationView,
-                         RedactorUpdateView,
-                         )
+                         RedactorUpdateView,)
 
 
 urlpatterns = [

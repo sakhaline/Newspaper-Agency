@@ -1,29 +1,3 @@
-{#{% if user.is_authenticated %}#}
-{#  <li>User: {{ user.username }}</li>#}
-{#  <li><a href="{% url 'logout' %}">LogOut</a></li>#}
-{#{% else %}#}
-{#  <li><a href="{% url 'login' %}">Login</a></li>#}
-{#{% endif %}#}
-{#<ul class="sidebar-nav">#}
-{#  <li><a href="{% url "media:index" %}">Home page</a></li>#}
-{#  <li><a href="{% url "media:newspaper-list" %}">Newspapers</a></li>#}
-{#  <li><a href="{% url "media:redactor-list" %}">Redactors</a></li>#}
-{#  <li><a href="{% url "media:topic-list" %}">Topics</a></li>#}
-{#</ul>#}
-
-{#<ul class="main-nav">#}
-{#  {% if user.is_authenticated %}#}
-{#    <li>User: {{ user.username }}</li>#}
-{#    <li><a href="{% url 'logout' %}">LogOut</a></li>#}
-{#  {% else %}#}
-{#    <li><a href="{% url 'login' %}">Login</a></li>#}
-{#  {% endif %}#}
-{#  <li><a href="{% url 'media:index' %}">Home</a></li>#}
-{#  <li><a href="{% url 'media:newspaper-list' %}">Newspapers</a></li>#}
-{#  <li><a href="{% url 'media:redactor-list' %}">Redactors</a></li>#}
-{#  <li><a href="{% url 'media:topic-list' %}">Topics</a></li>#}
-{#</ul>#}
-
 <ul class="sidebar-nav list-group">
   {% if user.is_authenticated %}
     <li class="list-group-item">User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
