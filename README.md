@@ -1,4 +1,4 @@
-# newspaper-agency
+
 # Django Newspaper agency Project
 
 ## Description
