@@ -39,7 +39,7 @@ def index(request):
 class NewspaperListView(generic.ListView):
     model = Newspaper
     queryset = Newspaper.objects.all().select_related("topic")
-    paginate_by = 4
+    paginate_by = 5
 
     def get_queryset(self):
         form = NewspaperFilterForm(self.request.GET)

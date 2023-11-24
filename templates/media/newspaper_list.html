@@ -21,7 +21,7 @@
         <li>
           <h3><a href="{% url 'media:newspaper-detail' pk=newspaper.id %}">{{ newspaper.id }})</a>Title: {{ newspaper.title }}</h3>
           <h5>Topic: {{ newspaper.topic.name }}</h5>
-          <p>{{ newspaper.content }}</p>
+          <p>{{ newspaper.content|truncatechars:500 }}</p>
         </li>
       {% endfor %}
     </ul>
