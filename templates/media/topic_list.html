@@ -1,14 +1,15 @@
 {% extends "base.html" %}
-{% block content %}
+{% load crispy_forms_filters %}
 
-  <h1>List of topics</h1>
+{% block content %}
     <form action="" method="get">
-    {{ form.as_p }}
-    <input type="submit" value="Search">
-  </form>
-    <a href="{% url 'media:topic-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
+    <div style="display: inline-flex; align-self: center">
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-light">Search</button>
+    </div>
+    </form>
+  <h1>Topics list
+    <a href="{% url 'media:topic-create' %}" class="btn btn-secondary link-to-page"> +</a>
   </h1>
   {% if topic_list %}
     <table class="table">
@@ -21,7 +22,7 @@
       {% for topic in topic_list %}
         <tr>
           <td>
-              {{ topic.id }}
+              {{ topic.pk }}
           </td>
           <td>
               {{ topic.name }}

@@ -39,7 +39,7 @@ def index(request):
 class NewspaperListView(generic.ListView):
     model = Newspaper
     queryset = Newspaper.objects.all().select_related("topic")
-    paginate_by = 5
+    paginate_by = 4
 
     def get_queryset(self):
         form = NewspaperFilterForm(self.request.GET)
@@ -97,7 +97,7 @@ class RedactorDetailView(generic.DetailView):
 
 class RedactorListView(generic.ListView):
     model = Redactor
-    paginate_by = 5
+    paginate_by = 4
 
     def get_queryset(self):
         form = RedactorSearchForm(self.request.GET)
@@ -145,7 +145,7 @@ class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class TopicListView(generic.ListView):
     model = Topic
-    paginate_by = 5
+    paginate_by = 4
 
     def get_queryset(self):
         form = TopicSearchForm(self.request.GET)

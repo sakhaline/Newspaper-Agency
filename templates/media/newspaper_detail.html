@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ newspaper.title }}
-    <a href="{% url 'media:newspaper-delete' pk=newspaper.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-    <a href="{% url 'media:newspaper-update' pk=newspaper.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>{{ newspaper.content }}</p>
-  <h1>Redactors</h1>
-  <hr>
-  <ul>
+  <h2>
+    Tiile: {{ newspaper.title }}
+  </h2>
+  <p><strong>Content:</strong> {{ newspaper.content }}</p>
+  <div class="ml-3">
+    <h4>Redactors:</h4>
     {% for redactor in newspaper.redactors.all %}
-      <li>{{ redactor.username }} ({{ redactor.first_name }} {{ redactor.last_name }})</li>
+        <hr>
+        <p{{ redactor.username }} ({{ redactor.first_name }} {{ redactor.last_name }})/p>
+    {% empty %}
+      <p>No redactors!</p>
     {% endfor %}
-  </ul>
+  </div>
+  <a href="{% url 'media:newspaper-update' pk=newspaper.id %}" class="btn btn-primary link-to-page">
+      Update
+  </a>
+  <a href="{% url 'media:newspaper-delete' pk=newspaper.id %}" class="btn btn-danger link-to-page">
+      Delete
+  </a>
 {% endblock %}

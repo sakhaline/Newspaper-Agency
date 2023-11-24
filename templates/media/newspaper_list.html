@@ -1,25 +1,26 @@
 {% extends "base.html" %}
-{% block content %}
 
+
+{% block content %}
   <form method="get" action="">
     {{ form.topic_name }}
-    <button type="submit">Filter</button>
+    <button type="submit" class="btn btn-light">Filter</button>
     {{ form.query_search }}
-    <button type="submit">Search</button>
+    <button type="submit" class="btn btn-light">Search</button>
   </form>
+
   <h1>
-    List of newspapers
-    <a href="{% url 'media:newspaper-create' %}" class="btn btn-primary link-to-page">
-      Create
+    Newspapers list
+    <a href="{% url 'media:newspaper-create' %}" class="btn btn-secondary link-to-page">
+      +
     </a>
   </h1>
-
   {% if newspaper_list %}
     <ul>
       {% for newspaper in newspaper_list %}
         <li>
-          <a href="{% url 'media:newspaper-detail' pk=newspaper.id %}">{{ newspaper.id }}</a>
-          <p>{{ newspaper.title }} ({{ newspaper.topic.name }})</p>
+          <h3><a href="{% url 'media:newspaper-detail' pk=newspaper.id %}">{{ newspaper.id }})</a>Title: {{ newspaper.title }}</h3>
+          <h5>Topic: {{ newspaper.topic.name }}</h5>
           <p>{{ newspaper.content }}</p>
         </li>
       {% endfor %}
@@ -28,5 +29,4 @@
     <p>There are no newspapers in service</p>
   {% endif %}
 {% endblock %}
-
 
