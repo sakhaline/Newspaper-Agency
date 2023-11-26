@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>
+  <h2 style="padding-top: 20px">
     Tiile: {{ newspaper.title }}
   </h2>
-  <p><strong>Content:</strong> {{ newspaper.content }}</p>
+  <p>{{ newspaper.content }}</p>
   <div class="ml-3">
     <h4>Redactors:</h4>
     {% for redactor in newspaper.publishers.all %}
