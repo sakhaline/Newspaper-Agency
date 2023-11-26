@@ -7,9 +7,9 @@
   <p><strong>Content:</strong> {{ newspaper.content }}</p>
   <div class="ml-3">
     <h4>Redactors:</h4>
-    {% for redactor in newspaper.redactors.all %}
+    {% for redactor in newspaper.publishers.all %}
         <hr>
-        <p{{ redactor.username }} ({{ redactor.first_name }} {{ redactor.last_name }})/p>
+        <p>{{ redactor.username }}</p>
     {% empty %}
       <p>No redactors!</p>
     {% endfor %}
