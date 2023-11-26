@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form method="get" action="">
+    {{ form.topic_name }}
+    <button type="submit" class="btn btn-light">Filter</button>
+    {{ form.query_search }}
+    <button type="submit" class="btn btn-light">Search</button>
+  </form>
+
+  <h1>
+    Newspapers list
+    <a href="{% url 'media:newspaper-create' %}" class="btn btn-secondary link-to-page">
+      +
+    </a>
+  </h1>
+  {% if newspaper_list %}
+    <ul>
+      {% for newspaper in newspaper_list %}
+        <li>
+          <h3><a href="{% url 'media:newspaper-detail' pk=newspaper.id %}">{{ newspaper.title }}</a></h3>
+          <h5>Topic: {{ newspaper.topic.name }}</h5>
+          <p>{{ newspaper.content|truncatechars:500 }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no newspapers in service</p>
+  {% endif %}
+{% endblock %}
+
+
