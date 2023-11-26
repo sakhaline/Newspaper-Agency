@@ -1,4 +1,3 @@
-
 # Django Newspaper agency Project
 
 ## Description
@@ -48,4 +47,3 @@ ing newspapers, redactors, and topics.
 ## Project Status
 
 Development is ongoing. Feel free to fork the project if needed.
-
