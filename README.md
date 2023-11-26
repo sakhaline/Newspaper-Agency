@@ -33,7 +33,7 @@ Follow the prompts to create a superuser account.
    ```bash
    python manage.py runserver
    
-3. Open your browser and go to http://localhost:8000 to access the application.
+3. Open your browser and go to https://newspaper-agency-lmq5.onrender.com to access the application.
 
 4. Log in with the superuser account created during installation to access the admin panel.
 
