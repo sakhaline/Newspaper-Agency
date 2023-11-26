@@ -14,16 +14,12 @@
   {% if topic_list %}
     <table class="table">
       <tr>
-        <th>ID</th>
         <th>Name</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
       {% for topic in topic_list %}
         <tr>
-          <td>
-              {{ topic.pk }}
-          </td>
           <td>
               {{ topic.name }}
           </td>

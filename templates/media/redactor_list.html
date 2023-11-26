@@ -14,7 +14,6 @@
     {% if redactor_list %}
     <table class="table">
       <tr>
-        <th>ID</th>
         <th>Username</th>
         <th>First name</th>
         <th>Last name</th>
@@ -22,7 +21,6 @@
       </tr>
     {% for redactor in redactor_list %}
       <tr>
-        <td>{{ redactor.id }}</td>
         <td><a href="{% url 'media:redactor-detail' pk=redactor.id %}">{{ redactor.username }} {% if user == redactor %} (Me){% endif %}</a></td>
         <td>{{ redactor.first_name }}</td>
         <td>{{ redactor.last_name }}</td>

@@ -38,7 +38,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class NewspaperListView(generic.ListView):
     model = Newspaper
-    queryset = Newspaper.objects.all().select_related("topic")
+    queryset = Newspaper.objects.all().select_related("topic").order_by("pk")
     paginate_by = 5
 
     def get_queryset(self):

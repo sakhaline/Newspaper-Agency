@@ -6,18 +6,20 @@
   </h1>
   <p><strong>First name:</strong> {{ redactor.first_name }}</p>
   <p><strong>Last name:</strong> {{ redactor.last_name }}</p>
-  <p><strong>Years of experience:</strong> {{ redactor.years_of_experience }}<a href="#"><i>Update</i></a></p>
+  <p><strong>Years of experience:</strong> {{ redactor.years_of_experience }}</p>
   <p><strong>Is staff:</strong> {{ redactor.is_staff }}</p>
   <div class="ml-3">
-    <h4>newspapers</h4>
+    <h3>Publications</h3>
+    <ul>
     {% for newspaper in redactor.newspapers.all %}
         <hr>
-        <p><strong>Title:</strong> {{ newspaper.title }}</p>
-        <p><strong>Topic:</strong> {{ newspaper.topic.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{newspaper.id}}</p>
+        <li><strong>Title:</strong> {{ newspaper.title }}</li>
+        <li><strong>Topic:</strong> {{ newspaper.topic.name }}</li>
+        <li class="text-muted"><strong>Id:</strong> {{newspaper.id}}</li>
     {% empty %}
       <p>No newspapers!</p>
     {% endfor %}
+    </ul>
   </div>
   <a href="{% url 'media:redactor-form' pk=redactor.id %}">
     <input class="btn btn-primary" type="submit" value="Update">
