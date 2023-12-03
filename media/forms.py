@@ -8,7 +8,6 @@ from media.models import Newspaper, Topic
 class NewspaperCreationForm(forms.ModelForm):
     publishers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
-        widget=forms.CheckboxSelectMultiple,
     )
 
     class Meta:

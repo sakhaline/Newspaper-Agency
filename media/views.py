@@ -112,11 +112,6 @@ class RedactorRegisterView(generic.CreateView):
     def get_success_url(self) -> str:
         return self.request.GET.get("next", "/")
 
-    def form_valid(self, form) -> HttpResponse:
-        response = super().form_valid(form)
-        login(self.request, self.object)
-        return response
-
 
 class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = RedactorUpdateForm
