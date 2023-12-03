@@ -16,41 +16,8 @@ from media.forms import (NewspaperCreationForm,
                          RedactorUpdateForm)
 
 
-@login_required
-def index(request: HttpRequest) -> HttpResponse:
-    """View function for the home page of the site."""
-
-    num_redactors = Redactor.objects.count()
-    num_newspapers = Newspaper.objects.count()
-    num_topics = Topic.objects.count()
-    num_visits = request.session.get("num_visits", 0)
-    request.session["num_visits"] = num_visits + 1
-
-    context = {
-        "num_redactors": num_redactors,
-        "num_newspapers": num_newspapers,
-        "num_topics": num_topics,
-        "num_visits": num_visits + 1,
-    }
-
-    return render(
-        request=request, template_name="media/index.html", context=context
-    )
-
-
-# def sign_up(request: HttpRequest) -> HttpResponse:
-#     if request.method == "POST":
-#         form = RedactorCreationForm(request.POST)
-#     else:
-#         form = RedactorCreationForm()
-#
-#     context = {
-#         "form": form
-#     }
-#
-#     return render(
-#         request=request, template_name="registration/sign_up.html", context=context
-#     )
+class IndexView(generic.TemplateView):
+    template_name = "media/index.html"
 
 
 class NewspaperListView(generic.ListView):

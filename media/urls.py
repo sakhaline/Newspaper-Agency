@@ -1,6 +1,6 @@
 from django.urls import path
 
-from media.views import (index,
+from media.views import (IndexView,
                          TopicListView,
                          NewspaperListView,
                          RedactorListView,
@@ -17,7 +17,7 @@ from media.views import (index,
 
 
 urlpatterns = [
-    path("", index, name="index"),
+    path("", IndexView.as_view(), name="index"),
     path("topics/", TopicListView.as_view(), name="topic-list"),
     path("topic/create/", TopicCreateView.as_view(), name="topic-create"),
     path("topic/<int:pk>/update/", TopicUpdateView.as_view(), name="topic-update"),

@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from config import settings
+from django.urls import reverse
 
 
 class Redactor(AbstractUser):
