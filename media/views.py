@@ -1,8 +1,8 @@
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views import generic
 from django.db.models import Q, QuerySet
@@ -120,6 +120,11 @@ class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy("media:redactor-list")
+
+
+class RedactorDeleteView(generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("media:redactor-list")
 
 
 class TopicListView(generic.ListView):

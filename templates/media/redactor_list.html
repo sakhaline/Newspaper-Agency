@@ -23,7 +23,7 @@
         <td>{{ redactor.first_name }}</td>
         <td>{{ redactor.last_name }}</td>
         <td>{{ redactor.years_of_experience }}</td>
-        <td><a href="#" class="btn btn-danger link-to-page">Delete</a></td>
+        <td><a href="{% url 'media:redactor-delete' pk=redactor.id %}" class="btn btn-danger link-to-page">Delete</a></td>
       </tr>
     {% endfor %}
 
