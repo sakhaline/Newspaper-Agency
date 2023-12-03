@@ -12,8 +12,8 @@ from media.forms import (NewspaperCreationForm,
                          NewspaperFilterForm,
                          TopicSearchForm,
                          RedactorSearchForm,
-                         RedactorCreationForm,
-                         RedactorUpdateForm,)
+                         RedactorRegisterForm,
+                         RedactorUpdateForm)
 
 
 @login_required
@@ -33,7 +33,24 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_visits": num_visits + 1,
     }
 
-    return render(request, "media/index.html", context=context)
+    return render(
+        request=request, template_name="media/index.html", context=context
+    )
+
+
+# def sign_up(request: HttpRequest) -> HttpResponse:
+#     if request.method == "POST":
+#         form = RedactorCreationForm(request.POST)
+#     else:
+#         form = RedactorCreationForm()
+#
+#     context = {
+#         "form": form
+#     }
+#
+#     return render(
+#         request=request, template_name="registration/sign_up.html", context=context
+#     )
 
 
 class NewspaperListView(generic.ListView):
@@ -121,9 +138,9 @@ class RedactorListView(generic.ListView):
         return context
 
 
-class RedactorCreationView(generic.CreateView):
-    form_class = RedactorCreationForm
-    template_name = 'registration/register.html'
+class RedactorRegisterView(generic.CreateView):
+    form_class = RedactorRegisterForm
+    template_name = 'registration/sign_up.html'
 
     def get_success_url(self) -> str:
         return self.request.GET.get("next", "/")

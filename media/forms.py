@@ -48,10 +48,16 @@ class RedactorSearchForm(forms.Form):
     )
 
 
-class RedactorCreationForm(UserCreationForm):
+class RedactorRegisterForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ("username", "first_name", "last_name", "email", "years_of_experience")
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "years_of_experience",
+        )
 
 
 class RedactorUpdateForm(UserChangeForm):
