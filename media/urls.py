@@ -33,7 +33,6 @@ urlpatterns = [
 
     path("redactors/", RedactorListView.as_view(), name="redactor-list"),
     path("redactors/<int:pk>/", RedactorDetailView.as_view(), name="redactor-detail"),
-    path("register/", RedactorRegisterView.as_view(), name="redactor-form"),
     path("redactors/<int:pk>/update", RedactorUpdateView.as_view(), name="redactor-form"),
     path("redactors/<int:pk>/delete/", RedactorDeleteView.as_view(), name="redactor-delete"),
     path("accounts/sign_up/", RedactorRegisterView.as_view(), name="sign-up")

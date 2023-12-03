@@ -23,7 +23,7 @@ class NewspaperListView(generic.ListView):
     queryset = Newspaper.objects.all().select_related("topic").order_by("pk")
     paginate_by = 5
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         form = NewspaperFilterForm(self.request.GET)
 
         queryset = Newspaper.objects.all()
@@ -43,7 +43,7 @@ class NewspaperListView(generic.ListView):
 
         return queryset
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context['form'] = NewspaperFilterForm(self.request.GET)
         return context
@@ -64,7 +64,7 @@ class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("media:newspaper-list")
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         return Newspaper.objects.filter(publishers=self.request.user)
 
 
@@ -119,12 +119,13 @@ class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "media/redactor_form.html"
     success_url = reverse_lazy("media:redactor-list")
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         return Redactor.objects.filter(id=self.request.user.id)
 
 
 class RedactorDeleteView(generic.DeleteView):
     model = get_user_model()
+    queryset = get_user_model().objects.all()
     success_url = reverse_lazy("media:redactor-list")
 
 
