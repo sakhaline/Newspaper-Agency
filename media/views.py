@@ -1,9 +1,7 @@
-from django.contrib.auth import login, get_user_model
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.urls import reverse_lazy
-from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
-from django.shortcuts import render
 from django.views import generic
 from django.db.models import Q, QuerySet
 
@@ -66,6 +64,9 @@ class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("media:newspaper-list")
 
+    def get_queryset(self):
+        return Newspaper.objects.filter(publishers=self.request.user)
+
 
 class NewspaperDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Newspaper
@@ -116,10 +117,10 @@ class RedactorRegisterView(generic.CreateView):
 class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = RedactorUpdateForm
     template_name = "media/redactor_form.html"
-    queryset = Redactor.objects.all()
+    success_url = reverse_lazy("media:redactor-list")
 
-    def get_success_url(self) -> str:
-        return reverse_lazy("media:redactor-list")
+    def get_queryset(self):
+        return Redactor.objects.filter(id=self.request.user.id)
 
 
 class RedactorDeleteView(generic.DeleteView):
@@ -150,19 +151,16 @@ class TopicListView(generic.ListView):
 class TopicCreateView(LoginRequiredMixin, generic.CreateView):
     model = Topic
     fields = "__all__"
-    template_name = "media/topic_form.html"
     success_url = reverse_lazy("media:topic-list")
 
 
 class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Topic
     fields = "__all__"
-    template_name = "media/topic_form.html"
     success_url = reverse_lazy("media:topic-list")
 
 
 class TopicDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Topic
     fields = "__all__"
-    template_name = "media/topic_confirm_delete.html"
     success_url = reverse_lazy("media:topic-list")
