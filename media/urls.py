@@ -16,8 +16,6 @@ from media.views import (IndexView,
                          RedactorUpdateView,
                          RedactorDeleteView,)
 
-# from media.views import delete_redactor_view
-
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
