@@ -1,26 +1,32 @@
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
 
-from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin,)
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import (get_object_or_404,
-                              render,
-                              redirect,)
+from django.shortcuts import (
+    get_object_or_404,
+    render,
+    redirect,
+)
 
 from django.urls import reverse_lazy
 from django.views import generic
 from django.db.models import Q, QuerySet
 
 from media.models import Redactor, Newspaper, Topic
-from media.forms import (NewspaperCreationForm,
-                         NewspaperFilterForm,
-                         NewspaperSearchForm,
-                         TopicSearchForm,
-                         RedactorSearchForm,
-                         RedactorRegisterForm,
-                         RedactorUpdateForm,)
+from media.forms import (
+    NewspaperCreationForm,
+    NewspaperFilterForm,
+    NewspaperSearchForm,
+    TopicSearchForm,
+    RedactorSearchForm,
+    RedactorRegisterForm,
+    RedactorUpdateForm,
+)
 
 
 @login_required
@@ -28,17 +34,17 @@ def delete_newspaper_view(request, pk):
     newspaper = get_object_or_404(Newspaper, pk=pk)
 
     if (
-            request.user.groups.filter(name='Mod').exists()
-            or request.user == newspaper.publishers.first()
+        request.user.groups.filter(name="Mod").exists()
+        or request.user == newspaper.publishers.first()
     ):
-        if request.method == 'POST':
+        if request.method == "POST":
             newspaper.delete()
-            return redirect('media:newspaper-list')
+            return redirect("media:newspaper-list")
         else:
             return render(
                 request=request,
-                template_name='media/newspaper_confirm_delete.html',
-                context={'newspaper': newspaper}
+                template_name="media/newspaper_confirm_delete.html",
+                context={"newspaper": newspaper},
             )
     else:
         return HttpResponseForbidden(
@@ -62,13 +68,13 @@ class NewspaperListView(generic.ListView):
         queryset = Newspaper.objects.all()
 
         if filter_form.is_valid():
-            topic_name = filter_form.cleaned_data.get('topic_name')
+            topic_name = filter_form.cleaned_data.get("topic_name")
 
             if topic_name:
                 queryset = queryset.filter(topic=topic_name)
 
         if search_form.is_valid():
-            search_query = search_form.cleaned_data.get('search_query')
+            search_query = search_form.cleaned_data.get("search_query")
 
             if search_query:
                 queryset = queryset.filter(
@@ -91,7 +97,9 @@ class NewspaperDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_in_mod_group'] = self.request.user.groups.filter(name='Mod').exists()
+        context["user_in_mod_group"] = self.request.user.groups.filter(
+            name="Mod"
+        ).exists()
 
         return context
 
@@ -139,14 +147,16 @@ class RedactorListView(generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["form"] = RedactorSearchForm(self.request.GET)
-        context["user_in_admin_group"] = self.request.user.groups.filter(name='Admin').exists()
+        context["user_in_admin_group"] = self.request.user.groups.filter(
+            name="Admin"
+        ).exists()
 
         return context
 
 
 class RedactorRegisterView(generic.CreateView):
     form_class = RedactorRegisterForm
-    template_name = 'registration/sign_up.html'
+    template_name = "registration/sign_up.html"
 
     def get_success_url(self) -> str:
         return self.request.GET.get("next", "/")
@@ -178,7 +188,7 @@ class TopicListView(generic.ListView):
         queryset = Topic.objects.all()
 
         if form.is_valid():
-            topic_name = form.cleaned_data.get('topic_name')
+            topic_name = form.cleaned_data.get("topic_name")
             return queryset.filter(name__icontains=topic_name)
 
         return queryset
@@ -187,7 +197,9 @@ class TopicListView(generic.ListView):
         context = super().get_context_data(**kwargs)
 
         context["form"] = TopicSearchForm(self.request.GET)
-        context["user_in_mod_group"] = self.request.user.groups.filter(name='Mod').exists()
+        context["user_in_mod_group"] = self.request.user.groups.filter(
+            name="Mod"
+        ).exists()
 
         return context
 
