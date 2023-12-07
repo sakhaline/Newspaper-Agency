@@ -5,6 +5,7 @@
   <form action="" method="post">
     {% csrf_token %}
     {{ form|crispy }}
-  <input type="submit" value="register">
+  <p>Have an account? Login <a href="/accounts/login"> here</a></p>
+  <input type="submit" value="Sign up">
   </form>
 {% endblock %}
