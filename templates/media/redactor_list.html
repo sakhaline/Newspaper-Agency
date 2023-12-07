@@ -3,10 +3,10 @@
 {% block content %}
   <form action="" method="get">
     {{ form.as_p }}
-    <input type="submit" value="search">
+    <button type="submit" class="btn btn-light">Search</button>
   </form>
     <h1>
-      Redactors list
+      Redactors
     </h1>
     {% if redactor_list %}
     <table class="table">
@@ -15,7 +15,9 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Years of experience</th>
-        <th>Delete</th>
+        {% if user_in_admin_group %}
+          <th>Delete</th>
+        {% endif %}
       </tr>
     {% for redactor in redactor_list %}
       <tr>
@@ -23,7 +25,9 @@
         <td>{{ redactor.first_name }}</td>
         <td>{{ redactor.last_name }}</td>
         <td>{{ redactor.years_of_experience }}</td>
-        <td><a href="{% url 'media:redactor-delete' pk=redactor.id %}" class="btn btn-danger link-to-page">Delete</a></td>
+        {% if user_in_admin_group %}
+          <td><a href="{% url 'media:redactor-delete' pk=redactor.id %}" class="btn btn-danger link-to-page">Delete</a></td>
+        {% endif %}
       </tr>
     {% endfor %}
 

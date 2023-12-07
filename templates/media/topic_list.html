@@ -3,26 +3,29 @@
 
 {% block content %}
     <form action="" method="get">
-    <div style="display: inline-flex; align-self: center">
       {{ form.as_p }}
       <button type="submit" class="btn btn-light">Search</button>
-    </div>
     </form>
-  <h1>Topics list
-    <a href="{% url 'media:topic-create' %}" class="btn btn-secondary link-to-page"> +</a>
+  <h1>Topics
+    {% if user_in_mod_group %}
+      <a href="{% url 'media:topic-create' %}" class="btn btn-secondary link-to-page"> +</a>
+    {% endif %}
   </h1>
   {% if topic_list %}
     <table class="table">
       <tr>
         <th>Name</th>
-        <th>Update</th>
-        <th>Delete</th>
+        {% if user_in_mod_group %}
+          <th>Update</th>
+          <th>Delete</th>
+        {% endif %}
       </tr>
       {% for topic in topic_list %}
         <tr>
           <td>
               {{ topic.name }}
           </td>
+          {% if user_in_mod_group %}
           <td>
               <a class="btn btn-primary link-to-page" href="{% url 'media:topic-update' pk=topic.id %}">
                 Update
@@ -33,6 +36,7 @@
                 Delete
               </a>
             </td>
+        {% endif %}
         </tr>
       {% endfor %}
     </table>

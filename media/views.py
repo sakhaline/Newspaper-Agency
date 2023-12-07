@@ -1,6 +1,14 @@
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseForbidden
+
 from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin)
+                                        PermissionRequiredMixin,)
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import (get_object_or_404,
+                              render,
+                              redirect,)
+
 from django.urls import reverse_lazy
 from django.views import generic
 from django.db.models import Q, QuerySet
@@ -8,10 +16,34 @@ from django.db.models import Q, QuerySet
 from media.models import Redactor, Newspaper, Topic
 from media.forms import (NewspaperCreationForm,
                          NewspaperFilterForm,
+                         NewspaperSearchForm,
                          TopicSearchForm,
                          RedactorSearchForm,
                          RedactorRegisterForm,
-                         RedactorUpdateForm)
+                         RedactorUpdateForm,)
+
+
+@login_required
+def delete_newspaper_view(request, pk):
+    newspaper = get_object_or_404(Newspaper, pk=pk)
+
+    if (
+            request.user.groups.filter(name='Mod').exists()
+            or request.user == newspaper.publishers.first()
+    ):
+        if request.method == 'POST':
+            newspaper.delete()
+            return redirect('media:newspaper-list')
+        else:
+            return render(
+                request=request,
+                template_name='media/newspaper_confirm_delete.html',
+                context={'newspaper': newspaper}
+            )
+    else:
+        return HttpResponseForbidden(
+            "You don't have permission to delete this newspaper."
+        )
 
 
 class IndexView(generic.TemplateView):
@@ -20,37 +52,48 @@ class IndexView(generic.TemplateView):
 
 class NewspaperListView(generic.ListView):
     model = Newspaper
-    queryset = Newspaper.objects.all().select_related("topic").order_by("pk")
+    queryset = Newspaper.objects.all().select_related("topic")
     paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
-        form = NewspaperFilterForm(self.request.GET)
+        filter_form = NewspaperFilterForm(self.request.GET)
+        search_form = NewspaperSearchForm(self.request.GET)
 
         queryset = Newspaper.objects.all()
 
-        if form.is_valid():
-            topic_name = form.cleaned_data.get('topic_name')
-            query_search = form.cleaned_data.get('query_search')
+        if filter_form.is_valid():
+            topic_name = filter_form.cleaned_data.get('topic_name')
 
             if topic_name:
                 queryset = queryset.filter(topic=topic_name)
 
-            if query_search:
+        if search_form.is_valid():
+            search_query = search_form.cleaned_data.get('search_query')
+
+            if search_query:
                 queryset = queryset.filter(
-                    Q(title__icontains=query_search)
-                    | Q(content__icontains=query_search)
+                    Q(title__icontains=search_query)
+                    | Q(content__icontains=search_query)
                 )
 
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        context['form'] = NewspaperFilterForm(self.request.GET)
+        context["filter_form"] = NewspaperFilterForm(self.request.GET)
+        context["search_form"] = NewspaperSearchForm(self.request.GET)
+
         return context
 
 
 class NewspaperDetailView(generic.DetailView):
     model = Newspaper
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_in_mod_group'] = self.request.user.groups.filter(name='Mod').exists()
+
+        return context
 
 
 class NewspaperCreateView(LoginRequiredMixin, generic.CreateView):
@@ -68,13 +111,6 @@ class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
         return Newspaper.objects.filter(publishers=self.request.user)
 
 
-class NewspaperDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Newspaper
-    fields = "__all__"
-    template_name = "media/newspaper_confirm_delete.html"
-    success_url = reverse_lazy("media:newspaper-list")
-
-
 class RedactorDetailView(generic.DetailView):
     model = Redactor
     queryset = Redactor.objects.all().prefetch_related("newspapers")
@@ -82,7 +118,7 @@ class RedactorDetailView(generic.DetailView):
 
 class RedactorListView(generic.ListView):
     model = Redactor
-    paginate_by = 4
+    paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
         form = RedactorSearchForm(self.request.GET)
@@ -103,6 +139,8 @@ class RedactorListView(generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["form"] = RedactorSearchForm(self.request.GET)
+        context["user_in_admin_group"] = self.request.user.groups.filter(name='Admin').exists()
+
         return context
 
 
@@ -123,15 +161,17 @@ class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
         return Redactor.objects.filter(id=self.request.user.id)
 
 
-class RedactorDeleteView(generic.DeleteView):
+class RedactorDeleteView(PermissionRequiredMixin, generic.DeleteView):
     model = get_user_model()
     queryset = get_user_model().objects.all()
     success_url = reverse_lazy("media:redactor-list")
 
+    permission_required = "media.delete_redactor"
+
 
 class TopicListView(generic.ListView):
     model = Topic
-    paginate_by = 4
+    paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
         form = TopicSearchForm(self.request.GET)
@@ -145,23 +185,32 @@ class TopicListView(generic.ListView):
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        context['form'] = TopicSearchForm(self.request.GET)
+
+        context["form"] = TopicSearchForm(self.request.GET)
+        context["user_in_mod_group"] = self.request.user.groups.filter(name='Mod').exists()
+
         return context
 
 
-class TopicCreateView(LoginRequiredMixin, generic.CreateView):
+class TopicCreateView(PermissionRequiredMixin, generic.CreateView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("media:topic-list")
 
+    permission_required = "media.add_topic"
 
-class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
+
+class TopicUpdateView(PermissionRequiredMixin, generic.UpdateView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("media:topic-list")
 
+    permission_required = "media.change_topic"
 
-class TopicDeleteView(LoginRequiredMixin, generic.DeleteView):
+
+class TopicDeleteView(PermissionRequiredMixin, generic.DeleteView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("media:topic-list")
+
+    permission_required = "media.delete_topic"

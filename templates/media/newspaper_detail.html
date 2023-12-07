@@ -18,8 +18,10 @@
     <a href="{% url 'media:newspaper-update' pk=newspaper.id %}" class="btn btn-primary link-to-page">
       Update
     </a>
+  {% endif %}
+    {% if user in newspaper.publishers.all or user_in_mod_group %}
     <a href="{% url 'media:newspaper-delete' pk=newspaper.id %}" class="btn btn-danger link-to-page">
-        Delete
+       Delete
     </a>
   {% endif %}
 {% endblock %}
