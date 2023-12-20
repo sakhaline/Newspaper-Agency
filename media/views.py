@@ -58,7 +58,7 @@ class IndexView(generic.TemplateView):
 
 class NewspaperListView(generic.ListView):
     model = Newspaper
-    queryset = Newspaper.objects.all().select_related("topic")
+    queryset = Newspaper.objects.select_related("topic")
     paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
@@ -121,7 +121,7 @@ class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class RedactorDetailView(generic.DetailView):
     model = Redactor
-    queryset = Redactor.objects.all().prefetch_related("newspapers")
+    queryset = Redactor.objects.prefetch_related("newspapers")
 
 
 class RedactorListView(generic.ListView):
