@@ -15,20 +15,6 @@ class NewspaperCreationForm(forms.ModelForm):
         fields = "__all__"
 
 
-# class NewspaperFilterForm(forms.Form):
-#     topic_name = forms.ModelChoiceField(
-#         queryset=Topic.objects.all(),
-#         empty_label="All topics",
-#         required=False,
-#     )
-#     query_search = forms.CharField(
-#         max_length=255,
-#         required=False,
-#         label="",
-#         widget=forms.TextInput(attrs={"placeholder": "Search..."})
-#     )
-
-
 class NewspaperFilterForm(forms.Form):
     topic_name = forms.ModelChoiceField(
         queryset=Topic.objects.all(),
