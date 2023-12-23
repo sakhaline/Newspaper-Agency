@@ -8,7 +8,7 @@
     </form>
   <h1>Topics
     {% if user_in_mod_group %}
-      <a href="{% url 'media:topic-create' %}" class="btn btn-secondary link-to-page"> +</a>
+      <a href="{% url 'agency:topic-create' %}" class="btn btn-secondary link-to-page"> +</a>
     {% endif %}
   </h1>
   {% if topic_list %}
@@ -27,12 +27,12 @@
           </td>
           {% if user_in_mod_group %}
           <td>
-              <a class="btn btn-primary link-to-page" href="{% url 'media:topic-update' pk=topic.id %}">
+              <a class="btn btn-primary link-to-page" href="{% url 'agency:topic-update' pk=topic.id %}">
                 Update
               </a>
             </td>
             <td>
-              <a class="btn btn-danger link-to-page" href="{% url 'media:topic-delete' pk=topic.id %}">
+              <a class="btn btn-danger link-to-page" href="{% url 'agency:topic-delete' pk=topic.id %}">
                 Delete
               </a>
             </td>

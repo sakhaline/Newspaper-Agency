@@ -17,8 +17,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.db.models import Q, QuerySet
 
-from media.models import Redactor, Newspaper, Topic
-from media.forms import (
+from agency.models import Redactor, Newspaper, Topic
+from agency.forms import (
     NewspaperCreationForm,
     NewspaperFilterForm,
     NewspaperSearchForm,
@@ -39,11 +39,11 @@ def delete_newspaper_view(request, pk):
     ):
         if request.method == "POST":
             newspaper.delete()
-            return redirect("media:newspaper-list")
+            return redirect("agency:newspaper-list")
         else:
             return render(
                 request=request,
-                template_name="media/newspaper_confirm_delete.html",
+                template_name="agency/newspaper_confirm_delete.html",
                 context={"newspaper": newspaper},
             )
     else:
@@ -53,12 +53,12 @@ def delete_newspaper_view(request, pk):
 
 
 class IndexView(generic.TemplateView):
-    template_name = "media/index.html"
+    template_name = "agency/index.html"
 
 
 class NewspaperListView(generic.ListView):
     model = Newspaper
-    queryset = Newspaper.objects.all().select_related("topic")
+    queryset = Newspaper.objects.select_related("topic")
     paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
@@ -106,14 +106,14 @@ class NewspaperDetailView(generic.DetailView):
 
 class NewspaperCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = NewspaperCreationForm
-    template_name = "media/newspaper_form.html"
-    success_url = reverse_lazy("media:newspaper-list")
+    template_name = "agency/newspaper_form.html"
+    success_url = reverse_lazy("agency:newspaper-list")
 
 
 class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Newspaper
     fields = "__all__"
-    success_url = reverse_lazy("media:newspaper-list")
+    success_url = reverse_lazy("agency:newspaper-list")
 
     def get_queryset(self) -> QuerySet:
         return Newspaper.objects.filter(publishers=self.request.user)
@@ -121,7 +121,7 @@ class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class RedactorDetailView(generic.DetailView):
     model = Redactor
-    queryset = Redactor.objects.all().prefetch_related("newspapers")
+    queryset = Redactor.objects.prefetch_related("newspapers")
 
 
 class RedactorListView(generic.ListView):
@@ -164,8 +164,8 @@ class RedactorRegisterView(generic.CreateView):
 
 class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = RedactorUpdateForm
-    template_name = "media/redactor_form.html"
-    success_url = reverse_lazy("media:redactor-list")
+    template_name = "agency/redactor_form.html"
+    success_url = reverse_lazy("agency:redactor-list")
 
     def get_queryset(self) -> QuerySet:
         return Redactor.objects.filter(id=self.request.user.id)
@@ -174,9 +174,9 @@ class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):
 class RedactorDeleteView(PermissionRequiredMixin, generic.DeleteView):
     model = get_user_model()
     queryset = get_user_model().objects.all()
-    success_url = reverse_lazy("media:redactor-list")
+    success_url = reverse_lazy("agency:redactor-list")
 
-    permission_required = "media.delete_redactor"
+    permission_required = "agency.delete_redactor"
 
 
 class TopicListView(generic.ListView):
@@ -207,22 +207,22 @@ class TopicListView(generic.ListView):
 class TopicCreateView(PermissionRequiredMixin, generic.CreateView):
     model = Topic
     fields = "__all__"
-    success_url = reverse_lazy("media:topic-list")
+    success_url = reverse_lazy("agency:topic-list")
 
-    permission_required = "media.add_topic"
+    permission_required = "agency.add_topic"
 
 
 class TopicUpdateView(PermissionRequiredMixin, generic.UpdateView):
     model = Topic
     fields = "__all__"
-    success_url = reverse_lazy("media:topic-list")
+    success_url = reverse_lazy("agency:topic-list")
 
-    permission_required = "media.change_topic"
+    permission_required = "agency.change_topic"
 
 
 class TopicDeleteView(PermissionRequiredMixin, generic.DeleteView):
     model = Topic
     fields = "__all__"
-    success_url = reverse_lazy("media:topic-list")
+    success_url = reverse_lazy("agency:topic-list")
 
-    permission_required = "media.delete_topic"
+    permission_required = "agency.delete_topic"

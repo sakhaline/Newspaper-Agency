@@ -10,7 +10,7 @@ class Redactor(AbstractUser):
 
     class Meta:
         verbose_name = "redactor"
-        ordering = ('username',)
+        ordering = ("username",)
 
     def __str__(self) -> str:
         return f"{self.username}"
@@ -28,10 +28,10 @@ class Newspaper(models.Model):
     content = models.TextField()
     published_date = models.DateField(auto_now_add=True)
     topic = models.ForeignKey(
-        Topic, on_delete=models.CASCADE, related_name="newspapers"
+        to=Topic, on_delete=models.CASCADE, related_name="newspapers"
     )
     publishers = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="newspapers"
+        to=settings.AUTH_USER_MODEL, related_name="newspapers"
     )
 
     def __str__(self) -> str:

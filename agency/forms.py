@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from media.models import Newspaper, Topic
+from agency.models import Newspaper, Topic
 
 
 class NewspaperCreationForm(forms.ModelForm):
@@ -13,20 +13,6 @@ class NewspaperCreationForm(forms.ModelForm):
     class Meta:
         model = Newspaper
         fields = "__all__"
-
-
-# class NewspaperFilterForm(forms.Form):
-#     topic_name = forms.ModelChoiceField(
-#         queryset=Topic.objects.all(),
-#         empty_label="All topics",
-#         required=False,
-#     )
-#     query_search = forms.CharField(
-#         max_length=255,
-#         required=False,
-#         label="",
-#         widget=forms.TextInput(attrs={"placeholder": "Search..."})
-#     )
 
 
 class NewspaperFilterForm(forms.Form):

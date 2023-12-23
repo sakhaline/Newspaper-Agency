@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.contenttypes.models import ContentType
 
-from media.models import Newspaper, Topic, Redactor
+from agency.models import Newspaper, Topic, Redactor
 
 
 @admin.register(Redactor)
