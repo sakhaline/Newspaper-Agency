@@ -19,7 +19,7 @@
 
   <h1>
     Newspapers
-    <a href="{% url 'media:newspaper-create' %}" class="btn btn-secondary link-to-page">
+    <a href="{% url 'agency:newspaper-create' %}" class="btn btn-secondary link-to-page">
       +
     </a>
   </h1>
@@ -27,7 +27,7 @@
     <ul>
       {% for newspaper in newspaper_list %}
         <li>
-          <h3><a href="{% url 'media:newspaper-detail' pk=newspaper.id %}">{{ newspaper.title }}</a></h3>
+          <h3><a href="{% url 'agency:newspaper-detail' pk=newspaper.id %}">{{ newspaper.title }}</a></h3>
           <h5>Topic: {{ newspaper.topic.name }}</h5>
           <p>{{ newspaper.content|truncatechars:500 }}</p>
         </li>

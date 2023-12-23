@@ -2,7 +2,7 @@
 
 ## Description
 
-The Django Media Project is a web application for managing newspapers, redactors, and topics. It provides views for listing, creating, updating, and deleting newspapers, redactors, and topics. The project also includes user authentication features.
+The Django agency Project is a web application for managing newspapers, redactors, and topics. It provides views for listing, creating, updating, and deleting newspapers, redactors, and topics. The project also includes user authentication features.
 ![Screenshot from 2023-11-24 05-42-42](https://github.com/sakhaline/newspaper-agency/assets/130174413/2afe5b5a-ac96-463d-beb5-f466e3911b11)
 ![Screenshot from 2023-11-24 05-43-02](https://github.com/sakhaline/newspaper-agency/assets/130174413/7373e26c-8763-432d-ace8-d1660e0f84d6)
 
@@ -13,15 +13,20 @@ The Django Media Project is a web application for managing newspapers, redactors
    https://github.com/sakhaline/newspaper-agency
    cd NewspaperAgency
    
-2. Install dependencies:
+2. Create a virtual environment and activate it:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
 
-3. Apply migrations:
+4. Apply migrations:
    ```bash
    python manage.py migrate
 
-4. Create a superuser (admin) account:
+5. Create a superuser (admin) account:
    ```bash
    python manage.py createsuperuser
 

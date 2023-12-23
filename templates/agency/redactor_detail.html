@@ -22,7 +22,7 @@
     </ul>
   </div>
   {% if redactor == user %}
-  <a href="{% url 'media:redactor-form' pk=redactor.id %}">
+  <a href="{% url 'agency:redactor-form' pk=redactor.id %}">
     <input class="btn btn-primary" type="submit" value="Update">
   </a>
   {% endif %}
