@@ -13,15 +13,20 @@ The Django agency Project is a web application for managing newspapers, redactor
    https://github.com/sakhaline/newspaper-agency
    cd NewspaperAgency
    
-2. Install dependencies:
+2. Create a virtual environment and activate it:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
 
-3. Apply migrations:
+4. Apply migrations:
    ```bash
    python manage.py migrate
 
-4. Create a superuser (admin) account:
+5. Create a superuser (admin) account:
    ```bash
    python manage.py createsuperuser
 
