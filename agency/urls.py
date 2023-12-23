@@ -1,6 +1,6 @@
 from django.urls import path
 
-from media.views import (
+from agency.views import (
     IndexView,
     TopicListView,
     NewspaperListView,
@@ -76,7 +76,7 @@ urlpatterns = [
         name="redactor-detail"
     ),
     path(
-        "redactors/<int:pk>/update",
+        "redactors/<int:pk>/update/",
         RedactorUpdateView.as_view(),
         name="redactor-form"
     ),
@@ -92,4 +92,4 @@ urlpatterns = [
     ),
 ]
 
-app_name = "media"
+app_name = "agency"

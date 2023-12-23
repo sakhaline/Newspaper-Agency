@@ -1,13 +1,13 @@
 <ul class="sidebar-nav list-group">
   {% if user.is_authenticated %}
-    <li class="list-group-item">User: <a href="{% url 'media:redactor-detail' pk=user.id %}">{{ user.get_username }}</a></li>
+    <li class="list-group-item">User: <a href="{% url 'agency:redactor-detail' pk=user.id %}">{{ user.get_username }}</a></li>
     <li class="list-group-item"><a href="{% url 'logout' %}?next={{request.path}}">Logout</a></li>
   {% else %}
     <li class="list-group-item"><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
   {% endif %}
   <br>
-  <li class="list-group-item"><a href="{% url 'media:index' %}">Home</a></li>
-  <li class="list-group-item"><a href="{% url 'media:newspaper-list' %}">Newspapers</a></li>
-  <li class="list-group-item"><a href="{% url 'media:redactor-list' %}">Redactors</a></li>
-  <li class="list-group-item"><a href="{% url 'media:topic-list' %}">Topics</a></li>
+  <li class="list-group-item"><a href="{% url 'agency:index' %}">Home</a></li>
+  <li class="list-group-item"><a href="{% url 'agency:newspaper-list' %}">Newspapers</a></li>
+  <li class="list-group-item"><a href="{% url 'agency:redactor-list' %}">Redactors</a></li>
+  <li class="list-group-item"><a href="{% url 'agency:topic-list' %}">Topics</a></li>
 </ul>
