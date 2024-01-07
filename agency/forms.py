@@ -24,11 +24,11 @@ class NewspaperFilterForm(forms.Form):
 
 
 class NewspaperSearchForm(forms.Form):
-    query_search = forms.CharField(
+    search_query = forms.CharField(
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search..."})
+        widget=forms.TextInput(attrs={"placeholder": "Search by title..."})
     )
 
 
@@ -60,6 +60,11 @@ class RedactorRegisterForm(UserCreationForm):
             "email",
             "years_of_experience",
         )
+        help_text = {"username": ""}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["password1"].help_text = ""
 
 
 class RedactorUpdateForm(UserChangeForm):

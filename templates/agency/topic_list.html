@@ -25,7 +25,7 @@
           <td>
               {{ topic.name }}
           </td>
-          {% if user_in_mod_group %}
+          {% if user_in_mod_group or user.is_superuser %}
           <td>
               <a class="btn btn-primary link-to-page" href="{% url 'agency:topic-update' pk=topic.id %}">
                 Update
