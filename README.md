@@ -6,6 +6,13 @@ The Django agency Project is a web application for managing newspapers, redactor
 ![Screenshot from 2023-11-24 05-42-42](https://github.com/sakhaline/newspaper-agency/assets/130174413/2afe5b5a-ac96-463d-beb5-f466e3911b11)
 ![Screenshot from 2023-11-24 05-43-02](https://github.com/sakhaline/newspaper-agency/assets/130174413/7373e26c-8763-432d-ace8-d1660e0f84d6)
 
+
+Open your browser and go to https://newspaper-agency-lmq5.onrender.com to access the application.
+
+Credentials to Log in:
+   * username: David
+   * password: 54321gfdsa
+
 ## Installation
 
 1. Clone the repository:
@@ -26,29 +33,14 @@ The Django agency Project is a web application for managing newspapers, redactor
    ```bash
    python manage.py migrate
 
-5. Create a superuser (admin) account:
-   ```bash
-   python manage.py createsuperuser
 
-Follow the prompts to create a superuser account.
+## Run server
 
-## Usage
-
-1. Start the development server:
+1. Run the development server:
    ```bash
    python manage.py runserver
-   
-3. Open your browser and go to http://localhost:8000 to access the application.
 
-4. Log in with the superuser account created during installation to access the admin panel.
-
-5. Explore and use the provided views for manag
-ing newspapers, redactors, and topics.
 
 ## Author
 
-*Ivanova Olexandra*
-
-## Project Status
-
-Development is ongoing. Feel free to fork the project if needed.
+*oleksandra.ivanova.dev@gmail.com*
