@@ -19,7 +19,6 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
-
 ALLOWED_HOSTS = ["127.0.0.1", "newspaper-agency-lmq5.onrender.com"]
 
 INSTALLED_APPS = [

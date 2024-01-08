@@ -23,17 +23,17 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("topics/", TopicListView.as_view(), name="topic-list"),
     path(
-        "topic/create/",
+        "topics/create/",
         TopicCreateView.as_view(),
         name="topic-create"
     ),
     path(
-        "topic/<int:pk>/update/",
+        "topics/<int:pk>/update/",
         TopicUpdateView.as_view(),
         name="topic-update"
     ),
     path(
-        "topic/<int:pk>/delete/",
+        "topics/<int:pk>/delete/",
         TopicDeleteView.as_view(),
         name="topic-delete"
     ),

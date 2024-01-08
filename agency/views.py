@@ -36,6 +36,7 @@ def delete_newspaper_view(request, pk):
     if (
         request.user.groups.filter(name="Mod").exists()
         or request.user == newspaper.publishers.first()
+        or request.user.is_superuser
     ):
         if request.method == "POST":
             newspaper.delete()
@@ -78,8 +79,7 @@ class NewspaperListView(generic.ListView):
 
             if search_query:
                 queryset = queryset.filter(
-                    Q(title__icontains=search_query)
-                    | Q(content__icontains=search_query)
+                    title__icontains=search_query
                 )
 
         return queryset
@@ -116,6 +116,8 @@ class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("agency:newspaper-list")
 
     def get_queryset(self) -> QuerySet:
+        if self.request.user.is_superuser:
+            return Newspaper.objects.all()
         return Newspaper.objects.filter(publishers=self.request.user)
 
 
@@ -159,7 +161,7 @@ class RedactorRegisterView(generic.CreateView):
     template_name = "registration/sign_up.html"
 
     def get_success_url(self) -> str:
-        return self.request.GET.get("next", "/")
+        return reverse_lazy("login") + f"?next={self.request.GET.get('next', '/')}"
 
 
 class RedactorUpdateView(LoginRequiredMixin, generic.UpdateView):

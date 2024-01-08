@@ -21,9 +21,14 @@
     {% endfor %}
     </ul>
   </div>
-  {% if redactor == user %}
+  {% if redactor == user or user.is_superuser %}
   <a href="{% url 'agency:redactor-form' pk=redactor.id %}">
     <input class="btn btn-primary" type="submit" value="Update">
   </a>
+  {% if user.is_superuser %}
+  <a href="{% url 'agency:redactor-form' pk=redactor.id %}">
+    <td><a href="{% url 'agency:redactor-delete' pk=redactor.id %}" class="btn btn-danger link-to-page">Delete</a></td>
+  </a>
+  {% endif %}
   {% endif %}
 {% endblock %}

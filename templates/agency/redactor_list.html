@@ -25,7 +25,7 @@
         <td>{{ redactor.first_name }}</td>
         <td>{{ redactor.last_name }}</td>
         <td>{{ redactor.years_of_experience }}</td>
-        {% if user_in_admin_group %}
+        {% if user_in_admin_group  or user.is_superuser%}
           <td><a href="{% url 'agency:redactor-delete' pk=redactor.id %}" class="btn btn-danger link-to-page">Delete</a></td>
         {% endif %}
       </tr>
